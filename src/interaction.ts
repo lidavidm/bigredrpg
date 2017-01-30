@@ -18,6 +18,18 @@
 
 import { Effect } from "./effect";
 
+export interface LocationTrigger {
+    kind: "location",
+    location: string,
+}
+
+export interface PersonTrigger {
+    kind: "person",
+    people: any[],
+}
+
+export type Trigger = LocationTrigger | PersonTrigger;
+
 export interface Choice {
     description: string,
     effects: Effect[],
@@ -26,4 +38,5 @@ export interface Choice {
 export default class Interaction {
     text: string;
     choices: Choice[];
+    trigger: Trigger;
 }
