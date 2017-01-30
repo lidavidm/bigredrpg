@@ -29,8 +29,8 @@ function main() {
     cornell.addLocation(lr6);
     cornell.addLocation(lr7);
 
-    let s1 = new Student("Student 1", "Computer Science", "Low Rise 6");
-    let s2 = new Student("Student 2", "Computer Science", "Low Rise 6");
+    let s1 = new Student(Student.newId(), "Student 1", "Computer Science", "Low Rise 6");
+    let s2 = new Student(Student.newId(), "Student 2", "Computer Science", "Low Rise 6");
 
     cornell.addStudent(s1, "Low Rise 6");
     cornell.addStudent(s2, "Low Rise 6");

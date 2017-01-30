@@ -31,13 +31,21 @@ export interface StudentStatus {
 }
 
 export default class Student {
+    id: number;
     name: string;
     major: string;
     dorm: string;
 
     status: StudentStatus;
 
-    constructor(name: string, major: string, dorm: string) {
+    static maxId = 0;
+    static newId(): number {
+        Student.maxId += 1;
+        return Student.maxId;
+    }
+
+    constructor(id: number, name: string, major: string, dorm: string) {
+        this.id = id;
         this.name = name;
         this.status = {
             stress: [0, 100],
