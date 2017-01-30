@@ -16,18 +16,43 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Location from "./location";
+import Student from "./student";
+
 /** Minimum possible time step, in minutes. */
 const TIME_DELTA = 5;
 
 export default class Cornell {
-    locations: Map<string, any>;
-    students: any[];
+    locations: Map<string, Location>;
+    students: Student[];
     time: number;
 
     constructor() {
         this.locations = new Map();
         this.students = [];
         this.time = 0;
+    }
+
+    addLocation(location: Location) {
+        if (!this.locations.has(location.name)) {
+            this.locations.set(location.name, location);
+        }
+        else {
+            throw {
+                description: "Location already present: " + location.name,
+            };
+        }
+    }
+
+    addStudent(student: Student, location: string) {
+        let loc = this.locations.get(location);
+        if (!loc) {
+            throw {
+                description: "Could not find location: " + location,
+            };
+        }
+        loc.addStudent(student);
+        this.students.push(student);
     }
 
     step() {

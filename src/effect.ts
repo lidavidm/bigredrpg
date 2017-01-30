@@ -16,36 +16,34 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export enum StatusType {
-    Stress,
-    Grades,
-    Boredom,
-    Exhaustion,
+import { StatusType } from "./student";
+
+export interface PlayerTarget {
+    kind: "player",
 }
 
-export interface StudentStatus {
-    stress: [number, number],
-    grades: [number, number],
-    boredom: [number, number],
-    exhaustion: [number, number],
+export interface NPCTarget {
+    kind: "npc",
 }
 
-export default class Student {
-    name: string;
-    major: string;
-    dorm: string;
-
-    status: StudentStatus;
-
-    constructor(name: string, major: string, dorm: string) {
-        this.name = name;
-        this.status = {
-            stress: [0, 100],
-            grades: [100, 100],
-            boredom: [0, 100],
-            exhaustion: [0, 100],
-        };
-        this.major = major;
-        this.dorm = dorm;
-    }
+export interface NoTarget {
+    kind: "none",
 }
+
+export interface EffectBase {
+    target: PlayerTarget | NPCTarget,
+}
+
+export interface Status extends EffectBase {
+    kind: "status",
+    status: StatusType,
+    modifier: number,
+    description: string,
+}
+
+export interface PassTime extends EffectBase {
+    kind: "pass_time",
+    steps: number,
+}
+
+export type Effect = Status | PassTime;
