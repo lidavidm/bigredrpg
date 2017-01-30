@@ -21,6 +21,8 @@ import Student from "./student";
 
 /** Minimum possible time step, in minutes. */
 const TIME_DELTA = 5;
+const DELTAS_PER_HOUR = 60 / TIME_DELTA;
+const DELTAS_PER_DAY = 24 * DELTAS_PER_HOUR;
 
 export default class Cornell {
     locations: Map<string, Location>;
@@ -53,6 +55,16 @@ export default class Cornell {
         }
         loc.addStudent(student);
         this.students.push(student);
+    }
+
+    setTime(day: number, hour: number, minute: number) {
+        if (minute % TIME_DELTA !== 0) {
+            throw {
+                description: "Minute must be a multiple of TIME_DELTA",
+            }
+        }
+
+        this.time = day * DELTAS_PER_DAY + hour * DELTAS_PER_HOUR + minute / TIME_DELTA;
     }
 
     step() {

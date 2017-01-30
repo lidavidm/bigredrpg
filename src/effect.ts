@@ -41,6 +41,7 @@ export interface Status extends EffectBase {
     description: string,
 }
 
+/** Suspend this actor for the specified number of time steps. */
 export interface PassTime extends EffectBase {
     kind: "pass_time",
     steps: number,

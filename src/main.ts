@@ -17,10 +17,29 @@
  */
 
 import Cornell from "./cornell";
+import Location from "./location";
+import Student from "./student";
 
 function main() {
     let cornell = new Cornell();
+
+    let lr6 = new Location("Low Rise 6");
+    let lr7 = new Location("Low Rise 7");
+
+    cornell.addLocation(lr6);
+    cornell.addLocation(lr7);
+
+    let s1 = new Student("Student 1", "Computer Science", "Low Rise 6");
+    let s2 = new Student("Student 2", "Computer Science", "Low Rise 6");
+
+    cornell.addStudent(s1, "Low Rise 6");
+    cornell.addStudent(s2, "Low Rise 6");
+
+    cornell.setTime(0, 7, 0);
+
     console.log("Cornell initialized.");
+
+    cornell.step();
 }
 
 main();
