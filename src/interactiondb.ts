@@ -16,16 +16,19 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Location from "./location";
+import Student from "./student";
+
 export interface Criterion {
 
 }
 
-export class InteractionDB {
+export class InteractionDb {
     constructor() {
 
     }
 
-    search(...criteria: Criterion[]) {
+    search(student: Student, location: Location) {
 
     }
 }
