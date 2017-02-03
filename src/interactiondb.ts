@@ -16,6 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Interaction from "./interaction";
 import Location from "./location";
 import Student from "./student";
 
@@ -24,11 +25,32 @@ export interface Criterion {
 }
 
 export class InteractionDb {
-    constructor() {
+    interactions: Interaction[];
 
+    constructor() {
+        this.interactions = [];
     }
 
-    search(student: Student, location: Location) {
+    addInteraction(interaction: Interaction) {
+        this.interactions.push(interaction);
+    }
 
+    search(student: Student, location: Location): Interaction[] {
+        let result = [];
+
+        for (let interaction of this.interactions) {
+            switch (interaction.trigger.kind) {
+            case "location":
+                if (interaction.trigger.location === location.name) {
+                    result.push(interaction);
+                }
+                break;
+            case "person":
+                // TODO:
+                break;
+            }
+        }
+
+        return result;
     }
 }
