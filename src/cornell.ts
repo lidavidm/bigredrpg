@@ -16,14 +16,20 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import Interaction from "./interaction";
+import { Choice } from "./interaction";
 import { InteractionDb } from "./interactiondb";
 import Location from "./location";
 import Student from "./student";
+
+import * as random from "./random";
 
 /** Minimum possible time step, in minutes. */
 const TIME_DELTA = 5;
 const DELTAS_PER_HOUR = 60 / TIME_DELTA;
 const DELTAS_PER_DAY = 24 * DELTAS_PER_HOUR;
+
+const INTERACTION_CHANCE = 0.6;
 
 export default class Cornell {
     locations: Map<string, Location>;
@@ -71,10 +77,39 @@ export default class Cornell {
     step(interactions: InteractionDb) {
         this.time += TIME_DELTA;
 
+        let processing: [Location, Student, Interaction][] = [];
+
         for (let location of this.locations.values()) {
             for (let student of location.students) {
                 let potentialInteractions = interactions.search(student, location);
-                console.log(student, location.name, potentialInteractions);
+                console.log("Found", student, location.name, potentialInteractions);
+
+                if (potentialInteractions.length > 0 && Math.random() < INTERACTION_CHANCE) {
+                    console.log("Interaction triggered");
+                    processing.push([location, student, random.choice(potentialInteractions)]);
+                }
+            }
+        }
+
+        for (let [location, student, interaction] of processing) {
+            console.log("Processing", student);
+
+            let weightedChoices: [Choice, number][] = [];
+            for (let choice of interaction.choices) {
+                weightedChoices.push([choice, 1.0 / interaction.choices.length]);
+            }
+            let choice = random.weightedChoice(weightedChoices);
+
+            console.log("Chose:", choice);
+
+            for (let effect of choice.effects) {
+                switch (effect.kind) {
+                case "pass_time":
+                    break;
+                case "status":
+                    console.log("Modifying status");
+                    break;
+                }
             }
         }
     }

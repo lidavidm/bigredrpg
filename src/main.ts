@@ -21,12 +21,26 @@ import Interaction from "./interaction";
 import {InteractionDb} from "./interactiondb";
 import Location from "./location";
 import Student from "./student";
+import { StatusType } from "./student";
 
 function main() {
     let interactions = new InteractionDb();
     let i1 = new Interaction();
     i1.text = "Test interaction 1";
-    i1.choices = [];
+    i1.choices = [{
+        description: "Choice 1",
+        effects: [
+            {
+                target: {
+                    kind: "player",
+                },
+                kind: "status",
+                status: StatusType.Stress,
+                modifier: 50,
+                description: "Oh no!",
+            }
+        ],
+    }];
     i1.trigger = {
         kind: "location",
         location: "Low Rise 7",
@@ -34,7 +48,20 @@ function main() {
     interactions.add(i1);
     let i2 = new Interaction();
     i2.text = "Test interaction 2";
-    i2.choices = [];
+    i2.choices = [{
+        description: "Choice 1",
+        effects: [
+            {
+                target: {
+                    kind: "player",
+                },
+                kind: "status",
+                status: StatusType.Stress,
+                modifier: 50,
+                description: "Oh no!",
+            }
+        ],
+    }];
     i2.trigger = {
         kind: "location",
         location: "Low Rise 7",
