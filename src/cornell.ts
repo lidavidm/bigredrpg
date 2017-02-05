@@ -16,6 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { InteractionDb } from "./interactiondb";
 import Location from "./location";
 import Student from "./student";
 
@@ -67,7 +68,14 @@ export default class Cornell {
         this.time = day * DELTAS_PER_DAY + hour * DELTAS_PER_HOUR + minute / TIME_DELTA;
     }
 
-    step() {
+    step(interactions: InteractionDb) {
         this.time += TIME_DELTA;
+
+        for (let location of this.locations.values()) {
+            for (let student of location.students) {
+                let potentialInteractions = interactions.search(student, location);
+                console.log(student, location.name, potentialInteractions);
+            }
+        }
     }
 }

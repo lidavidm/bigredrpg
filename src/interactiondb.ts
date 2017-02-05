@@ -31,7 +31,7 @@ export class InteractionDb {
         this.interactions = [];
     }
 
-    addInteraction(interaction: Interaction) {
+    add(interaction: Interaction) {
         this.interactions.push(interaction);
     }
 
