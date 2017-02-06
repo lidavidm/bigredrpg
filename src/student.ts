@@ -23,11 +23,32 @@ export enum StatusType {
     Exhaustion,
 }
 
+export interface StatusModifier {
+    value: number,
+    description: string,
+}
+
+export interface Status {
+    base: number,
+    max: number,
+    current: number,
+    modifiers: StatusModifier[],
+}
+
+function makeStatus(base: number, max: number): Status {
+    return {
+        base: base,
+        max: max,
+        current: base,
+        modifiers: [],
+    }
+}
+
 export interface StudentStatus {
-    stress: [number, number],
-    grades: [number, number],
-    boredom: [number, number],
-    exhaustion: [number, number],
+    stress: Status,
+    grades: Status,
+    boredom: Status,
+    exhaustion: Status,
 }
 
 export default class Student {
@@ -48,10 +69,10 @@ export default class Student {
         this.id = id;
         this.name = name;
         this.status = {
-            stress: [0, 100],
-            grades: [100, 100],
-            boredom: [0, 100],
-            exhaustion: [0, 100],
+            stress: makeStatus(0, 100),
+            grades: makeStatus(100, 100),
+            boredom: makeStatus(0, 100),
+            exhaustion: makeStatus(0, 100),
         };
         this.major = major;
         this.dorm = dorm;
