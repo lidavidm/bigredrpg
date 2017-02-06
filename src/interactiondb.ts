@@ -17,11 +17,17 @@
  */
 
 import Interaction from "./interaction";
+import { Trigger } from "./interaction";
 import Location from "./location";
 import Student from "./student";
+import { fail } from "./util";
 
 export interface Criterion {
 
+}
+
+function evaluateTrigger(trigger: Trigger): boolean {
+    return false;
 }
 
 export class InteractionDb {
@@ -48,6 +54,17 @@ export class InteractionDb {
             case "person":
                 // TODO:
                 break;
+            case "status":
+                // TODO:
+                break;
+            case "any":
+                // TODO:
+                break;
+            case "all":
+                // TODO:
+                break;
+            default:
+                return fail(interaction.trigger);
             }
         }
 

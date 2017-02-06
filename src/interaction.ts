@@ -17,6 +17,7 @@
  */
 
 import { Effect } from "./effect";
+import { StatusType } from "./student";
 
 export interface LocationTrigger {
     kind: "location",
@@ -28,7 +29,22 @@ export interface PersonTrigger {
     people: any[],
 }
 
-export type Trigger = LocationTrigger | PersonTrigger;
+export interface StatusTrigger {
+    kind: "status",
+    status: StatusType,
+}
+
+export interface AnyTrigger {
+    kind: "any",
+    triggers: Trigger[],
+}
+
+export interface AllTrigger {
+    kind: "all",
+    triggers: Trigger[],
+}
+
+export type Trigger = LocationTrigger | PersonTrigger | StatusTrigger | AnyTrigger | AllTrigger;
 
 export interface Choice {
     description: string,
