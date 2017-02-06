@@ -36,8 +36,10 @@ function main() {
                 },
                 kind: "status",
                 status: StatusType.Stress,
-                modifier: 50,
-                description: "Oh no!",
+                modifier: {
+                    value: 50,
+                    description: "Oh no!",
+                },
             }
         ],
     }];
@@ -57,8 +59,10 @@ function main() {
                 },
                 kind: "status",
                 status: StatusType.Stress,
-                modifier: 50,
-                description: "Oh no!",
+                modifier: {
+                    value: 50,
+                    description: "Oh no!",
+                },
             }
         ],
     }];

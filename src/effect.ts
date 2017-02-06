@@ -16,7 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { StatusType } from "./student";
+import { StatusModifier, StatusType } from "./student";
 
 export interface PlayerTarget {
     kind: "player",
@@ -37,8 +37,7 @@ export interface EffectBase {
 export interface Status extends EffectBase {
     kind: "status",
     status: StatusType,
-    modifier: number,
-    description: string,
+    modifier: StatusModifier,
 }
 
 /** Suspend this actor for the specified number of time steps. */

@@ -107,7 +107,9 @@ export default class Cornell {
                 case "pass_time":
                     break;
                 case "status":
-                    console.log("Modifying status");
+                    console.log("Applying status modifier", effect.modifier);
+                    student.applyStatusModifier(effect.status, effect.modifier);
+                    console.log(student.status);
                     break;
                 }
             }

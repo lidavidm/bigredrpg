@@ -77,4 +77,27 @@ export default class Student {
         this.major = major;
         this.dorm = dorm;
     }
+
+    applyStatusModifier(status: StatusType, modifier: StatusModifier) {
+        let target = null;
+        switch (status) {
+        case StatusType.Stress:
+            target = this.status.stress;
+            break;
+        case StatusType.Grades:
+            target = this.status.grades;
+            break;
+        case StatusType.Boredom:
+            target = this.status.boredom;
+            break;
+        case StatusType.Exhaustion:
+            target = this.status.exhaustion;
+            break;
+        }
+
+        if (target) {
+            target.modifiers.push(modifier);
+            target.current += modifier.value;
+        }
+    }
 }
