@@ -26,8 +26,33 @@ export interface Criterion {
 
 }
 
-function evaluateTrigger(trigger: Trigger): boolean {
-    return false;
+function evaluateTrigger(trigger: Trigger, location: Location): boolean {
+    switch (trigger.kind) {
+    case "location":
+        return trigger.location === location.name;
+    case "person":
+        return false;
+        // TODO:
+    case "status":
+        return false;
+        // TODO:
+    case "any":
+        for (let subtrigger of trigger.triggers) {
+            if (evaluateTrigger(subtrigger, location)) {
+                return true;
+            }
+        }
+        return false;
+    case "all":
+        for (let subtrigger of trigger.triggers) {
+            if (!evaluateTrigger(subtrigger, location)) {
+                return false;
+            }
+        }
+        return true;
+    default:
+        return fail(trigger);
+    }
 }
 
 export class InteractionDb {
@@ -45,26 +70,8 @@ export class InteractionDb {
         let result = [];
 
         for (let interaction of this.interactions) {
-            switch (interaction.trigger.kind) {
-            case "location":
-                if (interaction.trigger.location === location.name) {
-                    result.push(interaction);
-                }
-                break;
-            case "person":
-                // TODO:
-                break;
-            case "status":
-                // TODO:
-                break;
-            case "any":
-                // TODO:
-                break;
-            case "all":
-                // TODO:
-                break;
-            default:
-                return fail(interaction.trigger);
+            if (evaluateTrigger(interaction.trigger, location)) {
+                result.push(interaction);
             }
         }
 
