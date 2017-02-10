@@ -77,8 +77,8 @@ function main() {
     let lr6 = new Location("Low Rise 6");
     let lr7 = new Location("Low Rise 7");
 
-    cornell.addLocation(lr6);
-    cornell.addLocation(lr7);
+    cornell.addLocation(lr6, { x: 0, y: 0 });
+    cornell.addLocation(lr7, { x: 1, y: 0 });
 
     let s1 = new Student(Student.newId(), "Student 1", "Computer Science", "Low Rise 6");
     let s2 = new Student(Student.newId(), "Student 2", "Computer Science", "Low Rise 6");

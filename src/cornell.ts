@@ -16,7 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Grid } from "./grid";
+import { Grid, Position } from "./grid";
 import Interaction from "./interaction";
 import { Choice } from "./interaction";
 import { InteractionDb } from "./interactiondb";
@@ -45,9 +45,10 @@ export default class Cornell {
         this.time = 0;
     }
 
-    addLocation(location: Location) {
+    addLocation(location: Location, position: Position) {
         if (!this.locations.has(location.name)) {
             this.locations.set(location.name, location);
+            this.grid.addLocation(location, position);
         }
         else {
             throw {
