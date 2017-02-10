@@ -16,6 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Grid } from "./grid";
 import Interaction from "./interaction";
 import { Choice } from "./interaction";
 import { InteractionDb } from "./interactiondb";
@@ -32,11 +33,13 @@ const DELTAS_PER_DAY = 24 * DELTAS_PER_HOUR;
 const INTERACTION_CHANCE = 0.6;
 
 export default class Cornell {
+    grid: Grid;
     locations: Map<string, Location>;
     students: Student[];
     time: number;
 
     constructor() {
+        this.grid = new Grid();
         this.locations = new Map();
         this.students = [];
         this.time = 0;

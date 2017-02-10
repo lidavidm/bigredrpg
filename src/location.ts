@@ -21,12 +21,10 @@ import Student from "./student";
 export default class Location {
     name: string;
     students: Student[];
-    adjacent: string[];
 
     constructor(name: string) {
         this.name = name;
         this.students = [];
-        this.adjacent = [];
     }
 
     addStudent(student: Student) {
