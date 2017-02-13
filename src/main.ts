@@ -23,6 +23,8 @@ import Location from "./location";
 import Student from "./student";
 import { StatusType } from "./student";
 
+import { randomStudent } from "./generation/student";
+
 function main() {
     let interactions = new InteractionDb();
     let i1 = new Interaction();
@@ -78,9 +80,9 @@ function main() {
     cornell.addLocation(lr6, { x: 0, y: 0 });
     cornell.addLocation(lr7, { x: 1, y: 0 });
 
-    let s1 = new Student(Student.newId(), "Student 1", "Computer Science", "Low Rise 6");
-    let s2 = new Student(Student.newId(), "Student 2", "Computer Science", "Low Rise 6");
-    let s3 = new Student(Student.newId(), "Student 3", "Computer Science", "Low Rise 7");
+    let s1 = randomStudent(["Low Rise 6", "Low Rise 7"]);
+    let s2 = randomStudent(["Low Rise 6", "Low Rise 7"]);
+    let s3 = randomStudent(["Low Rise 6", "Low Rise 7"]);
 
     cornell.addStudent(s1, "Low Rise 6");
     cornell.addStudent(s2, "Low Rise 6");
