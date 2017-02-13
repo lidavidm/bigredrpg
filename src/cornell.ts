@@ -112,7 +112,7 @@ export default class Cornell {
                     break;
                 case "status":
                     console.log("Applying status modifier", effect.modifier);
-                    student.applyStatusModifier(effect.status, effect.modifier);
+                    student.applyStatusModifier(effect.modifier);
                     console.log(student.status);
                     break;
                 }

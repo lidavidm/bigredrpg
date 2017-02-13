@@ -36,7 +36,6 @@ export interface EffectBase {
 
 export interface Status extends EffectBase {
     kind: "status",
-    status: StatusType,
     modifier: StatusModifier,
 }
 

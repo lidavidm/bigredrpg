@@ -35,9 +35,8 @@ function main() {
                     kind: "player",
                 },
                 kind: "status",
-                status: StatusType.Stress,
                 modifier: {
-                    value: 50,
+                    modifiers: [[StatusType.Stress, 50]],
                     description: "Oh no!",
                 },
             }
@@ -58,9 +57,8 @@ function main() {
                     kind: "player",
                 },
                 kind: "status",
-                status: StatusType.Stress,
                 modifier: {
-                    value: 50,
+                    modifiers: [[StatusType.Stress, 50]],
                     description: "Oh no!",
                 },
             }

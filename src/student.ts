@@ -24,23 +24,23 @@ export enum StatusType {
 }
 
 export interface StatusModifier {
-    value: number,
+    modifiers: [StatusType, number][],
     description: string,
 }
 
 export interface Status {
     base: number,
+    min: number
     max: number,
     current: number,
-    modifiers: StatusModifier[],
 }
 
 function makeStatus(base: number, max: number): Status {
     return {
         base: base,
+        min: 0,
         max: max,
         current: base,
-        modifiers: [],
     }
 }
 
@@ -49,6 +49,8 @@ export interface StudentStatus {
     grades: Status,
     boredom: Status,
     exhaustion: Status,
+
+    modifiers: StatusModifier[],
 }
 
 export default class Student {
@@ -73,31 +75,36 @@ export default class Student {
             grades: makeStatus(100, 100),
             boredom: makeStatus(0, 100),
             exhaustion: makeStatus(0, 100),
+
+            modifiers: [],
         };
         this.major = major;
         this.dorm = dorm;
     }
 
-    applyStatusModifier(status: StatusType, modifier: StatusModifier) {
-        let target = null;
-        switch (status) {
-        case StatusType.Stress:
-            target = this.status.stress;
-            break;
-        case StatusType.Grades:
-            target = this.status.grades;
-            break;
-        case StatusType.Boredom:
-            target = this.status.boredom;
-            break;
-        case StatusType.Exhaustion:
-            target = this.status.exhaustion;
-            break;
-        }
+    applyStatusModifier(modifier: StatusModifier) {
+        this.status.modifiers.push(modifier);
 
-        if (target) {
-            target.modifiers.push(modifier);
-            target.current += modifier.value;
+        for (let [status, value] of modifier.modifiers) {
+            let target = null;
+            switch (status) {
+            case StatusType.Stress:
+                target = this.status.stress;
+                break;
+            case StatusType.Grades:
+                target = this.status.grades;
+                break;
+            case StatusType.Boredom:
+                target = this.status.boredom;
+                break;
+            case StatusType.Exhaustion:
+                target = this.status.exhaustion;
+                break;
+            }
+
+            if (target) {
+                target.current += value;
+            }
         }
     }
 }
