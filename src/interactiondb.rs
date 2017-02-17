@@ -16,18 +16,34 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Student from "./student";
+use interaction::Interaction;
+use location::LocationId;
+use student::Student;
 
-export default class Location {
-    name: string;
-    students: Student[];
+pub struct InteractionDb {
+    interactions: Vec<Interaction>,
+}
 
-    constructor(name: string) {
-        this.name = name;
-        this.students = [];
+impl InteractionDb {
+    pub fn new() -> InteractionDb {
+        InteractionDb {
+            interactions: Vec::new(),
+        }
     }
 
-    addStudent(student: Student) {
-        this.students.push(student);
+    pub fn add(&mut self, interaction: Interaction) {
+        self.interactions.push(interaction);
+    }
+
+    pub fn search(&self, student: &Student, location: LocationId) -> Vec<&Interaction> {
+        let mut result = Vec::new();
+
+        for interaction in self.interactions.iter() {
+            if interaction.trigger.evaluate(student, location) {
+                result.push(interaction);
+            }
+        }
+
+        result
     }
 }

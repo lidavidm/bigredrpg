@@ -16,19 +16,17 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function choice<T>(list: T[]): T {
-    return list[Math.floor(list.length * Math.random())];
-}
+extern crate rand;
 
-export function weightedChoice<T>(list: [T, number][]): T {
-    let r = Math.random();
+pub mod cornell;
+pub mod interaction;
+pub mod interactiondb;
+pub mod location;
+pub mod student;
 
-    for (let [item, weight] of list) {
-        if (r < weight) {
-            return item;
-        }
-        r -= weight;
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
     }
-
-    throw "Error: inbalanced weights?";
 }

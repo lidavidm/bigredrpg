@@ -16,6 +16,14 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export function fail(x: never): never {
-    throw "Fail";
+use student::Student;
+
+pub struct Location {
+    pub name: String,
+    pub id: LocationId,
+
+    pub students: Vec<Student>,
 }
+
+#[derive(Copy,Clone,Debug,Eq,Hash,PartialEq)]
+pub struct LocationId(i32);
