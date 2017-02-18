@@ -41,8 +41,11 @@ impl Cornell {
         }
     }
 
-    pub fn addLocation(&mut self, location: Location) {
+    pub fn addLocation(&mut self, location: Location) -> LocationId {
+        let id = location.id;
         self.locations.insert(location.id, location);
+
+        id
     }
 
     pub fn addStudent(&mut self, student: Student, location: LocationId) {
