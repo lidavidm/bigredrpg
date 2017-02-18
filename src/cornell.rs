@@ -42,14 +42,14 @@ impl Cornell {
         }
     }
 
-    pub fn addLocation(&mut self, location: Location) -> LocationId {
+    pub fn add_location(&mut self, location: Location) -> LocationId {
         let id = location.id;
         self.locations.insert(location.id, location);
 
         id
     }
 
-    pub fn addStudent(&mut self, student: Student, location: LocationId) {
+    pub fn add_student(&mut self, student: Student, location: LocationId) {
         if let Some(loc) = self.locations.get_mut(&location) {
             loc.students.push(student);
         }
