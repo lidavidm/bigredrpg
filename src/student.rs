@@ -21,6 +21,8 @@ use std::collections::HashMap;
 use location::LocationId;
 use nature::Nature;
 
+pub type StudentId = u32;
+
 #[derive(Clone,Copy,Debug,Eq,PartialEq)]
 pub enum StatusKind {
     Stress,
@@ -55,7 +57,7 @@ impl Status {
 }
 
 pub struct Student {
-    pub id: u32,
+    pub id: StudentId,
     pub name: String,
     pub major: String,
     pub dorm: LocationId,
@@ -70,7 +72,7 @@ pub struct Student {
 }
 
 impl Student {
-    pub fn new<S: Into<String>>(id: u32, name: S, major: S, dorm: LocationId) -> Student {
+    pub fn new<S: Into<String>>(id: StudentId, name: S, major: S, dorm: LocationId) -> Student {
         Student {
             id: id,
             name: name.into(),
