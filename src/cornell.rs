@@ -16,7 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::collections::HashMap;
+use std::ops;
 
 use rand::{self, Rng};
 
@@ -25,7 +25,26 @@ use location::{Location, LocationId, Map};
 use student::Student;
 use util::rng;
 
+/// Time represents the current game time, stored as the number of
+/// minutes since game start.
+#[derive(Clone,Copy,Debug,Eq,PartialEq)]
 pub struct Time(u32);
+
+pub const TIME_STEP: Time = Time(15);
+
+impl ops::Add for Time {
+    type Output = Time;
+
+    fn add(self, rhs: Time) -> Time {
+        Time(self.0 + rhs.0)
+    }
+}
+
+impl ops::AddAssign for Time {
+    fn add_assign(&mut self, rhs: Time) {
+        self.0 += rhs.0;
+    }
+}
 
 pub struct Cornell {
     map: Map,
@@ -56,7 +75,7 @@ impl Cornell {
     }
 
     pub fn step(&mut self, interactions: &InteractionDb) {
-        // TODO: step time
+        self.time += TIME_STEP;
 
         let mut rng = rand::thread_rng();
         for (location_id, location) in self.map.iter_mut() {
