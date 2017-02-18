@@ -67,7 +67,7 @@ impl Cornell {
 
     pub fn add_student(&mut self, student: Student, location: LocationId) {
         if let Some(loc) = self.map.get_mut(location) {
-            loc.students.push(student);
+            loc.add_student(student);
         }
         else {
             panic!("LocationId not found: {:?}", location);

@@ -18,7 +18,7 @@
 
 use std::collections::HashMap;
 
-use student::Student;
+use student::{Student, StudentId};
 
 pub struct Location {
     pub name: String,
@@ -38,6 +38,21 @@ impl Location {
 
             students: Vec::new(),
         }
+    }
+
+    pub fn add_student(&mut self, student: Student) {
+        self.students.push(student);
+    }
+
+    pub fn remove_student_by_id(&mut self, id: StudentId) -> Student {
+        let mut idx = None;
+        for (index, student) in self.students.iter().enumerate() {
+            if student.id == id {
+                idx = Some(index);
+            }
+        }
+
+        self.students.remove(idx.expect(&format!("Could not remove student {}", id)))
     }
 }
 
