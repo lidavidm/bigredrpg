@@ -18,6 +18,7 @@
 
 extern crate rand;
 
+pub mod chance;
 pub mod cornell;
 pub mod interaction;
 pub mod interactiondb;

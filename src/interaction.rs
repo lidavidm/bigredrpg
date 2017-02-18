@@ -16,6 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use chance::Chance;
 use location::LocationId;
 use student::{StatusKind, StatusModifier, Student};
 
