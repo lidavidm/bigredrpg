@@ -21,14 +21,14 @@ use std::collections::HashMap;
 use rand::{self, Rng};
 
 use interactiondb::InteractionDb;
-use location::{Location, LocationId};
+use location::{Location, LocationId, Map};
 use student::Student;
 use util::rng;
 
 pub struct Time(u32);
 
 pub struct Cornell {
-    locations: HashMap<LocationId, Location>,
+    map: Map,
 
     time: Time,
 }
@@ -36,21 +36,18 @@ pub struct Cornell {
 impl Cornell {
     pub fn new() -> Cornell {
         Cornell {
-            locations: HashMap::new(),
+            map: Map::new(),
 
             time: Time(0),
         }
     }
 
     pub fn add_location(&mut self, location: Location) -> LocationId {
-        let id = location.id;
-        self.locations.insert(location.id, location);
-
-        id
+        self.map.add(location)
     }
 
     pub fn add_student(&mut self, student: Student, location: LocationId) {
-        if let Some(loc) = self.locations.get_mut(&location) {
+        if let Some(loc) = self.map.get_mut(location) {
             loc.students.push(student);
         }
         else {
@@ -59,8 +56,10 @@ impl Cornell {
     }
 
     pub fn step(&mut self, interactions: &InteractionDb) {
+        // TODO: step time
+
         let mut rng = rand::thread_rng();
-        for (location_id, location) in self.locations.iter_mut() {
+        for (location_id, location) in self.map.iter_mut() {
             for student in location.students.iter_mut() {
                 let possible_interactions = interactions.search(&student, *location_id);
 

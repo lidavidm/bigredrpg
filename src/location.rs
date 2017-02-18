@@ -16,6 +16,8 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::collections::HashMap;
+
 use student::Student;
 
 pub struct Location {
@@ -51,5 +53,34 @@ impl LocationIdGenerator {
         self.0 += 1;
 
         id
+    }
+}
+
+pub struct Map {
+    locations: HashMap<LocationId, Location>,
+    junctions: HashMap<LocationId, LocationId>,
+}
+
+impl Map {
+    pub fn new() -> Map {
+        Map {
+            locations: HashMap::new(),
+            junctions: HashMap::new(),
+        }
+    }
+
+    pub fn add(&mut self, location: Location) -> LocationId {
+        let id = location.id;
+        self.locations.insert(location.id, location);
+
+        id
+    }
+
+    pub fn get_mut(&mut self, id: LocationId) -> Option<&mut Location> {
+        self.locations.get_mut(&id)
+    }
+
+    pub fn iter_mut(&mut self) -> ::std::collections::hash_map::IterMut<LocationId, Location> {
+        self.locations.iter_mut()
     }
 }
