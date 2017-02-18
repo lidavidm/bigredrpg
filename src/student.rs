@@ -28,8 +28,8 @@ pub enum StatusKind {
 
 #[derive(Clone)]
 pub struct StatusModifier {
-    description: String,
-    modifiers: Vec<(StatusKind, i32)>,
+    pub description: String,
+    pub modifiers: Vec<(StatusKind, i32)>,
 }
 
 pub struct Status {

@@ -27,3 +27,29 @@ pub struct Location {
 
 #[derive(Copy,Clone,Debug,Eq,Hash,PartialEq)]
 pub struct LocationId(i32);
+
+impl Location {
+    pub fn new<S: Into<String>>(name: S, id: LocationId) -> Location {
+        Location {
+            name: name.into(),
+            id: id,
+
+            students: Vec::new(),
+        }
+    }
+}
+
+pub struct LocationIdGenerator(i32);
+
+impl LocationIdGenerator {
+    pub fn new_from_index(index: i32) -> LocationIdGenerator {
+        LocationIdGenerator(index)
+    }
+
+    pub fn new_id(&mut self) -> LocationId {
+        let id = LocationId(self.0);
+        self.0 += 1;
+
+        id
+    }
+}
