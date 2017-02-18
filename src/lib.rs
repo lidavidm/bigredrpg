@@ -25,6 +25,7 @@ pub mod interactiondb;
 pub mod location;
 pub mod nature;
 pub mod student;
+pub mod util;
 
 #[cfg(test)]
 mod tests {
@@ -48,7 +49,7 @@ mod tests {
         db.add(super::interaction::Interaction {
             text: "".into(),
             choices: vec![
-                super::interaction::Choice {
+                (super::interaction::Choice {
                     description: "".into(),
                     effects: vec![
                         super::interaction::Effect {
@@ -61,7 +62,21 @@ mod tests {
                             }),
                         },
                     ]
-                },
+                }, super::chance::Chance(40), vec![]),
+                (super::interaction::Choice {
+                    description: "".into(),
+                    effects: vec![
+                        super::interaction::Effect {
+                            target: super::interaction::EffectTarget::Initiator,
+                            action: super::interaction::EffectAction::Status(super::student::StatusModifier {
+                                description: "".into(),
+                                modifiers: vec![
+                                    (super::student::StatusKind::Stress, 10),
+                                ],
+                            }),
+                        },
+                    ]
+                }, super::chance::Chance(60), vec![]),
             ],
             trigger: super::interaction::Trigger::Location(lr7),
         });

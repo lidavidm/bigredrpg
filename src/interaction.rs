@@ -78,8 +78,31 @@ pub struct Choice {
     pub effects: Vec<Effect>,
 }
 
+pub enum Disposition {
+    Nature {
+        name: String,
+        modifier: i32,
+    }
+}
+
+impl Disposition {
+    pub fn value(&self, student: &Student) -> i32 {
+        use self::Disposition::*;
+
+        match self {
+            &Nature { ref name, modifier } => {
+                if student.has_nature(name.as_str()) {
+                    return modifier
+                }
+            }
+        }
+
+        0
+    }
+}
+
 pub struct Interaction {
     pub text: String,
-    pub choices: Vec<Choice>,
+    pub choices: Vec<(Choice, Chance, Vec<Disposition>)>,
     pub trigger: Trigger,
 }

@@ -23,6 +23,7 @@ use rand::{self, Rng};
 use interactiondb::InteractionDb;
 use location::{Location, LocationId};
 use student::Student;
+use util::rng;
 
 pub struct Time(u32);
 
@@ -64,7 +65,14 @@ impl Cornell {
                 let possible_interactions = interactions.search(&student, *location_id);
 
                 if let Some(interaction) = rng.choose(&possible_interactions) {
-                    if let Some(choice) = rng.choose(&interaction.choices) {
+                    let mut choices = Vec::new();
+                    for &(ref item, mut chance, ref dispositions) in interaction.choices.iter() {
+                        for disposition in dispositions.iter() {
+                            chance += disposition.value(student);
+                        }
+                        choices.push((item, chance));
+                    }
+                    if let Some(choice) = rng::weighted_random(choices.iter().cloned(), &mut rng) {
                         for effect in choice.effects.iter() {
                             effect.apply(student);
                         }
