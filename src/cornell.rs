@@ -78,6 +78,9 @@ impl Cornell {
         self.time += TIME_STEP;
 
         let mut rng = rand::thread_rng();
+
+        let mut side_effects = Vec::new();
+
         for (location_id, location) in self.map.iter_mut() {
             for student in location.students.iter_mut() {
                 let possible_interactions = interactions.search(&student, *location_id);
@@ -90,13 +93,19 @@ impl Cornell {
                         }
                         choices.push((item, chance));
                     }
-                    if let Some(choice) = rng::weighted_random(choices.iter().cloned(), &mut rng) {
+
+                    let rand_choice = rng::weighted_random(choices.iter().cloned(), &mut rng);
+                    if let Some((_choice_index, choice)) = rand_choice {
                         for effect in choice.effects.iter() {
-                            effect.apply(student);
+                            effect.apply(*location_id, student, &mut side_effects);
                         }
                     }
                 }
             }
+        }
+
+        for side_effect in side_effects {
+            side_effect.apply(&mut self.map);
         }
     }
 }
