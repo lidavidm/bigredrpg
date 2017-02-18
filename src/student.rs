@@ -16,7 +16,10 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::collections::HashMap;
+
 use location::LocationId;
+use nature::Nature;
 
 #[derive(Clone,Copy,Debug,Eq,PartialEq)]
 pub enum StatusKind {
@@ -52,10 +55,10 @@ impl Status {
 }
 
 pub struct Student {
-    id: u32,
-    name: String,
-    major: String,
-    dorm: LocationId,
+    pub id: u32,
+    pub name: String,
+    pub major: String,
+    pub dorm: LocationId,
 
     stress: Status,
     boredom: Status,
@@ -63,6 +66,7 @@ pub struct Student {
     grades: Status,
 
     modifiers: Vec<StatusModifier>,
+    natures: HashMap<String, Nature>,
 }
 
 impl Student {
@@ -79,6 +83,7 @@ impl Student {
             grades: Status::new(100),
 
             modifiers: Vec::new(),
+            natures: HashMap::new(),
         }
     }
 
@@ -94,5 +99,9 @@ impl Student {
         }
 
         self.modifiers.push(modifier);
+    }
+
+    pub fn has_nature<'a, S: Into<&'a str>>(&self, nature: S) -> bool {
+        self.natures.contains_key(nature.into())
     }
 }

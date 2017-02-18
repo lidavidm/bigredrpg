@@ -22,6 +22,7 @@ pub mod cornell;
 pub mod interaction;
 pub mod interactiondb;
 pub mod location;
+pub mod nature;
 pub mod student;
 
 #[cfg(test)]
