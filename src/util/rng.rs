@@ -20,15 +20,15 @@ use rand::Rng;
 
 use ::chance::Chance;
 
-pub fn weighted_random<'a, I, T, R>(items: I, rng: &mut R) -> Option<&'a T>
+pub fn weighted_random<'a, I, T, R>(items: I, rng: &mut R) -> Option<(usize, &'a T)>
     where I: Iterator<Item=(&'a T, Chance)>,
           R: Rng
 {
     let mut num = rng.gen_range(0, 100);
 
-    for (item, chance) in items {
+    for (index, (item, chance)) in items.enumerate() {
         if chance > num {
-            return Some(&item);
+            return Some((index, &item));
         }
         else {
             num -= chance.0;
