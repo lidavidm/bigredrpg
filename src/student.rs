@@ -54,6 +54,18 @@ impl Status {
             current: base as i32,
         }
     }
+
+    pub fn value(&self) -> u32 {
+        if self.current < self.range.0 as i32 {
+            self.range.0
+        }
+        else if self.current > self.range.1 as i32 {
+            self.range.1
+        }
+        else {
+            self.current as u32
+        }
+    }
 }
 
 pub struct Student {
@@ -105,5 +117,16 @@ impl Student {
 
     pub fn has_nature<'a, S: Into<&'a str>>(&self, nature: S) -> bool {
         self.natures.contains_key(nature.into())
+    }
+
+    pub fn get_status(&self, kind: StatusKind) -> &Status {
+        use self::StatusKind::*;
+
+        match kind {
+            Stress => &self.stress,
+            Boredom => &self.boredom,
+            Exhaustion => &self.exhaustion,
+            Grades => &self.grades,
+        }
     }
 }
