@@ -81,6 +81,25 @@ mod tests {
             trigger: super::interaction::Trigger::Location(lr7),
         });
 
+        db.add(super::interaction::Interaction {
+            text: "".into(),
+            choices: vec![
+                (super::interaction::Choice {
+                    description: "".into(),
+                    effects: vec![
+                        super::interaction::Effect {
+                            target: super::interaction::EffectTarget::Initiator,
+                            action: super::interaction::EffectAction::Move(lr7),
+                        },
+                    ]
+                }, super::chance::Chance(100), vec![]),
+            ],
+            trigger: super::interaction::Trigger::Location(lr6),
+        });
+
         school.step(&db);
+
+        assert_eq!(school.get_map().get(lr6).unwrap().students.len(), 0);
+        assert_eq!(school.get_map().get(lr7).unwrap().students.len(), 2);
     }
 }
