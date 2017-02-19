@@ -18,7 +18,21 @@
 
 use rand::Rng;
 
-use ::chance::Chance;
+use ::student::Student;
+use ::chance::{Chance, Disposition};
+
+pub fn convert_disposition_list<'a, T>(items: &'a [(T, Chance, Vec<Disposition>)], student: &Student)
+                                       -> Vec<(&'a T, Chance)> {
+    let mut choices = Vec::new();
+    for &(ref item, mut chance, ref dispositions) in items.iter() {
+        for disposition in dispositions.iter() {
+            chance += disposition.value(student);
+        }
+        choices.push((item, chance));
+    }
+
+    choices
+}
 
 pub fn weighted_random<'a, I, T, R>(items: I, rng: &mut R) -> Option<(usize, &'a T)>
     where I: Iterator<Item=(&'a T, Chance)>,

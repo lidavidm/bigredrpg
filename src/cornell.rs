@@ -92,13 +92,7 @@ impl Cornell {
                 let possible_interactions = interactions.search(&student, *location_id);
 
                 if let Some(interaction) = rng.choose(&possible_interactions) {
-                    let mut choices = Vec::new();
-                    for &(ref item, mut chance, ref dispositions) in interaction.choices.iter() {
-                        for disposition in dispositions.iter() {
-                            chance += disposition.value(student);
-                        }
-                        choices.push((item, chance));
-                    }
+                    let choices = rng::convert_disposition_list(&interaction.choices, student);
 
                     let rand_choice = rng::weighted_random(choices.iter().cloned(), &mut rng);
                     if let Some((_choice_index, choice)) = rand_choice {
