@@ -89,14 +89,38 @@ impl Cornell {
             for student in location.students.iter_mut() {
                 student.check_goals(*location_id);
 
-                let possible_interactions = interactions.search(&student, *location_id);
+                let roll = rng::d20(&mut rng);
 
-                if let Some(interaction) = rng.choose(&possible_interactions) {
-                    let choices = rng::convert_disposition_list(&interaction.choices, student);
+                if roll > 15 {
+                    let possible_interactions = interactions.search(&student, *location_id);
 
-                    let rand_choice = rng::weighted_random(choices.iter().cloned(), &mut rng);
-                    if let Some((_choice_index, choice)) = rand_choice {
-                        for effect in choice.effects.iter() {
+                    if let Some(interaction) = rng.choose(&possible_interactions) {
+                        let choices = rng::convert_disposition_list(&interaction.choices, student);
+
+                        let rand_choice = rng::weighted_random(choices.iter().cloned(), &mut rng);
+                        if let Some((_choice_index, choice)) = rand_choice {
+                            for effect in choice.effects.iter() {
+                                effect.apply(*location_id, student, &mut side_effects);
+                            }
+                        }
+                    }
+                }
+                else {
+                    let effects = {
+                        student.with_weighted_goals(|goals| {
+                            let choice = rng::weighted_random(goals.iter().cloned(), &mut rng);
+
+                            if let Some((_, goal)) = choice {
+                                Some(goal.apply())
+                            }
+                            else {
+                                None
+                            }
+                        })
+                    };
+
+                    if let Some(effects) = effects {
+                        for effect in effects {
                             effect.apply(*location_id, student, &mut side_effects);
                         }
                     }
