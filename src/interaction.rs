@@ -16,7 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use chance::Chance;
+use chance::{Chance, Disposition};
 use location::{LocationId, Map};
 use student::{StatusKind, StatusModifier, Student, StudentId};
 
@@ -108,29 +108,6 @@ impl Effect {
 pub struct Choice {
     pub description: String,
     pub effects: Vec<Effect>,
-}
-
-pub enum Disposition {
-    Nature {
-        name: String,
-        modifier: i32,
-    }
-}
-
-impl Disposition {
-    pub fn value(&self, student: &Student) -> i32 {
-        use self::Disposition::*;
-
-        match self {
-            &Nature { ref name, modifier } => {
-                if student.has_nature(name.as_str()) {
-                    return modifier
-                }
-            }
-        }
-
-        0
-    }
 }
 
 pub struct Interaction {

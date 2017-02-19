@@ -19,6 +19,8 @@
 use std::cmp;
 use std::ops;
 
+use student::Student;
+
 #[derive(Clone,Copy,Debug,Eq,Hash,PartialEq)]
 pub struct Chance(pub u32);
 
@@ -57,5 +59,28 @@ impl cmp::PartialEq<u32> for Chance {
 impl cmp::PartialOrd<u32> for Chance {
     fn partial_cmp(&self, other: &u32) -> Option<cmp::Ordering> {
         cmp::PartialOrd::partial_cmp(&self.0, other)
+    }
+}
+
+pub enum Disposition {
+    Nature {
+        name: String,
+        modifier: i32,
+    }
+}
+
+impl Disposition {
+    pub fn value(&self, student: &Student) -> i32 {
+        use self::Disposition::*;
+
+        match self {
+            &Nature { ref name, modifier } => {
+                if student.has_nature(name.as_str()) {
+                    return modifier
+                }
+            }
+        }
+
+        0
     }
 }

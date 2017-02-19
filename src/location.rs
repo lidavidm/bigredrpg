@@ -99,6 +99,10 @@ impl Map {
         self.locations.get_mut(&id)
     }
 
+    pub fn iter(&self) -> ::std::collections::hash_map::Iter<LocationId, Location> {
+        self.locations.iter()
+    }
+
     pub fn iter_mut(&mut self) -> ::std::collections::hash_map::IterMut<LocationId, Location> {
         self.locations.iter_mut()
     }
