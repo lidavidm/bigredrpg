@@ -87,6 +87,8 @@ impl Cornell {
 
         for (location_id, location) in self.map.iter_mut() {
             for student in location.students.iter_mut() {
+                student.check_goals(*location_id);
+
                 let possible_interactions = interactions.search(&student, *location_id);
 
                 if let Some(interaction) = rng.choose(&possible_interactions) {

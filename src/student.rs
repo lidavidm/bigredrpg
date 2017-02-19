@@ -16,6 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::cell::RefCell;
 use std::collections::HashMap;
 
 use chance::{Chance, Disposition};
@@ -76,7 +77,7 @@ pub struct Student {
     pub major: String,
     pub dorm: LocationId,
 
-    goals: Vec<(Goal, Chance, Disposition)>,
+    goals: RefCell<Vec<(Goal, Chance, Disposition)>>,
 
     stress: Status,
     boredom: Status,
@@ -95,7 +96,7 @@ impl Student {
             major: major.into(),
             dorm: dorm,
 
-            goals: Vec::new(),
+            goals: RefCell::new(Vec::new()),
 
             stress: Status::new(0),
             boredom: Status::new(0),
@@ -134,5 +135,12 @@ impl Student {
             Exhaustion => &self.exhaustion,
             Grades => &self.grades,
         }
+    }
+
+    pub fn check_goals(&mut self, location: LocationId) {
+        let mut goals = self.goals.borrow_mut();
+        goals.retain(|&(ref goal, _, _)| {
+            !goal.is_fulfilled(&self, location)
+        });
     }
 }

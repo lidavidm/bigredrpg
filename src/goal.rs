@@ -17,9 +17,26 @@
  */
 
 use location::LocationId;
+use student::Student;
 
 /// A Goal is used to define essentially a probabilistic state machine
 /// for a particular student.
 pub enum Goal {
     Location(LocationId),
+}
+
+impl Goal {
+    /// If a goal is selected, then take a step towards fulfilling the
+    /// goal.
+    pub fn apply(&self) {
+        // TODO:
+    }
+
+    pub fn is_fulfilled(&self, student: &Student, location: LocationId) -> bool {
+        use self::Goal::*;
+
+        match self {
+            &Location(target) => target == location,
+        }
+    }
 }
