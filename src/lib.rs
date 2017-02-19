@@ -20,6 +20,7 @@ extern crate rand;
 
 pub mod chance;
 pub mod cornell;
+pub mod effect;
 pub mod goal;
 pub mod interaction;
 pub mod interactiondb;
@@ -53,9 +54,9 @@ mod tests {
                 (super::interaction::Choice {
                     description: "".into(),
                     effects: vec![
-                        super::interaction::Effect {
-                            target: super::interaction::EffectTarget::Initiator,
-                            action: super::interaction::EffectAction::Status(super::student::StatusModifier {
+                        super::effect::Effect {
+                            target: super::effect::EffectTarget::Initiator,
+                            action: super::effect::EffectAction::Status(super::student::StatusModifier {
                                 description: "".into(),
                                 modifiers: vec![
                                     (super::student::StatusKind::Stress, -10),
@@ -67,9 +68,9 @@ mod tests {
                 (super::interaction::Choice {
                     description: "".into(),
                     effects: vec![
-                        super::interaction::Effect {
-                            target: super::interaction::EffectTarget::Initiator,
-                            action: super::interaction::EffectAction::Status(super::student::StatusModifier {
+                        super::effect::Effect {
+                            target: super::effect::EffectTarget::Initiator,
+                            action: super::effect::EffectAction::Status(super::student::StatusModifier {
                                 description: "".into(),
                                 modifiers: vec![
                                     (super::student::StatusKind::Stress, 10),
@@ -88,9 +89,9 @@ mod tests {
                 (super::interaction::Choice {
                     description: "".into(),
                     effects: vec![
-                        super::interaction::Effect {
-                            target: super::interaction::EffectTarget::Initiator,
-                            action: super::interaction::EffectAction::Move(lr7),
+                        super::effect::Effect {
+                            target: super::effect::EffectTarget::Initiator,
+                            action: super::effect::EffectAction::Move(lr7),
                         },
                     ]
                 }, super::chance::Chance(100), vec![]),

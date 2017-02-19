@@ -17,6 +17,7 @@
  */
 
 use chance::{Chance, Disposition};
+use effect::Effect;
 use location::{LocationId, Map};
 use student::{StatusKind, StatusModifier, Student, StudentId};
 
@@ -40,68 +41,6 @@ impl Trigger {
             &All(ref statuses) => statuses.iter().all(|x| x.evaluate(student, location)),
             &Any(ref statuses) => statuses.iter().any(|x| x.evaluate(student, location)),
         }
-    }
-}
-
-pub enum SideEffect {
-    // student, current, destination
-    Move(StudentId, LocationId, LocationId),
-}
-
-impl SideEffect {
-    pub fn apply(&self, map: &mut Map) {
-        use self::SideEffect::*;
-
-        match self {
-            &Move(student, current, destination) => {
-                let student = {
-                    let current = map.get_mut(current)
-                        .expect(&format!("location {:?} does not exist!", current));
-                    current.remove_student_by_id(student)
-                };
-                let destination = map.get_mut(destination)
-                    .expect(&format!("location {:?} does not exist!", destination));
-                destination.add_student(student);
-            }
-        }
-    }
-}
-
-pub enum EffectAction {
-    Status(StatusModifier),
-    Move(LocationId),
-}
-
-impl EffectAction {
-    pub fn apply(&self, location: LocationId, target: &mut Student, side_effects: &mut Vec<SideEffect>) {
-        use self::EffectAction::*;
-
-        match self {
-            &Status(ref modifier) => {
-                target.apply_modifier(modifier.clone());
-            }
-            &Move(id) => {
-                side_effects.push(SideEffect::Move(target.id, location, id));
-            }
-        }
-    }
-}
-
-pub enum EffectTarget {
-    Initiator,
-    Participant,
-    Both,
-    None,
-}
-
-pub struct Effect {
-    pub target: EffectTarget,
-    pub action: EffectAction,
-}
-
-impl Effect {
-    pub fn apply(&self, location: LocationId, initiator: &mut Student, side_effects: &mut Vec<SideEffect>) {
-        self.action.apply(location, initiator, side_effects);
     }
 }
 
