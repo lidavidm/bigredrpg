@@ -18,6 +18,8 @@
 
 use std::collections::HashMap;
 
+use chance::{Chance, Disposition};
+use goal::Goal;
 use location::LocationId;
 use nature::Nature;
 
@@ -74,6 +76,8 @@ pub struct Student {
     pub major: String,
     pub dorm: LocationId,
 
+    goals: Vec<(Goal, Chance, Disposition)>,
+
     stress: Status,
     boredom: Status,
     exhaustion: Status,
@@ -90,6 +94,8 @@ impl Student {
             name: name.into(),
             major: major.into(),
             dorm: dorm,
+
+            goals: Vec::new(),
 
             stress: Status::new(0),
             boredom: Status::new(0),

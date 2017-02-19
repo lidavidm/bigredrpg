@@ -20,6 +20,7 @@ extern crate rand;
 
 pub mod chance;
 pub mod cornell;
+pub mod goal;
 pub mod interaction;
 pub mod interactiondb;
 pub mod location;
