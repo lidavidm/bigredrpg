@@ -16,6 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use effect::{Effect, EffectAction, EffectTarget};
 use location::LocationId;
 use student::Student;
 
@@ -28,8 +29,15 @@ pub enum Goal {
 impl Goal {
     /// If a goal is selected, then take a step towards fulfilling the
     /// goal.
-    pub fn apply(&self) {
-        // TODO:
+    pub fn apply(&self) -> Vec<Effect> {
+        use self::Goal::*;
+
+        match self {
+            &Location(target) => vec![Effect {
+                target: EffectTarget::Initiator,
+                action: EffectAction::Move(target),
+            }],
+        }
     }
 
     pub fn is_fulfilled(&self, student: &Student, location: LocationId) -> bool {

@@ -77,6 +77,9 @@ pub struct Student {
     pub major: String,
     pub dorm: LocationId,
 
+    /// The current goals of the student. Invariant: should be
+    /// maintained in sorted order by chance. Chances do not need to
+    /// add to 100.
     goals: RefCell<Vec<(Goal, Chance, Disposition)>>,
 
     stress: Status,
