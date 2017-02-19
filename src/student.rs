@@ -23,6 +23,7 @@ use chance::{Chance, Disposition};
 use goal::Goal;
 use location::LocationId;
 use nature::Nature;
+use util::rng;
 
 pub type StudentId = u32;
 
@@ -80,7 +81,7 @@ pub struct Student {
     /// The current goals of the student. Invariant: should be
     /// maintained in sorted order by chance. Chances do not need to
     /// add to 100.
-    goals: RefCell<Vec<(Goal, Chance, Disposition)>>,
+    goals: RefCell<Vec<(Goal, Chance, Vec<Disposition>)>>,
 
     stress: Status,
     boredom: Status,
@@ -145,5 +146,14 @@ impl Student {
         goals.retain(|&(ref goal, _, _)| {
             !goal.is_fulfilled(&self, location)
         });
+    }
+
+    pub fn with_weighted_goals<F, R>(&self, f: F) -> R
+        where F: FnOnce(Vec<(&Goal, Chance)>) -> R
+    {
+        let goals = self.goals.borrow_mut();
+        let weighted_goals = rng::convert_disposition_list(goals.as_slice(), self);
+
+        f(weighted_goals)
     }
 }
