@@ -91,6 +91,10 @@ impl Map {
         id
     }
 
+    pub fn get(&self, id: LocationId) -> Option<&Location> {
+        self.locations.get(&id)
+    }
+
     pub fn get_mut(&mut self, id: LocationId) -> Option<&mut Location> {
         self.locations.get_mut(&id)
     }

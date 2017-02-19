@@ -74,6 +74,10 @@ impl Cornell {
         }
     }
 
+    pub fn get_map(&self) -> &Map {
+        &self.map
+    }
+
     pub fn step(&mut self, interactions: &InteractionDb) {
         self.time += TIME_STEP;
 
