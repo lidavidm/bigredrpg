@@ -51,3 +51,7 @@ pub fn weighted_random<'a, I, T, R>(items: I, rng: &mut R) -> Option<(usize, &'a
 
     None
 }
+
+pub fn d20<R: Rng>(rng: &mut R) -> u32 {
+    rng.gen_range(1, 21)
+}
