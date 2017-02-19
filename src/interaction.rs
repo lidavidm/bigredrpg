@@ -32,7 +32,11 @@ impl Trigger {
         use self::Trigger::*;
         match self {
             &Location(id) => id == location,
-            &Status(kind, min, max) => false,
+            &Status(kind, min, max) => {
+                let status = student.get_status(kind).value();
+
+                status >= min && status <= max
+            },
             &All(ref statuses) => statuses.iter().all(|x| x.evaluate(student, location)),
             &Any(ref statuses) => statuses.iter().any(|x| x.evaluate(student, location)),
         }
