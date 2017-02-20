@@ -21,7 +21,7 @@ use std::ops;
 
 use student::Student;
 
-#[derive(Clone,Copy,Debug,Eq,Hash,PartialEq)]
+#[derive(Clone,Copy,Debug,Eq,Hash,PartialEq,PartialOrd,Ord)]
 pub struct Chance(pub u32);
 
 impl ops::Add<i32> for Chance {
