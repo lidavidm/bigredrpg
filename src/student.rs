@@ -141,6 +141,11 @@ impl Student {
         }
     }
 
+    pub fn add_goal(&mut self, goal: Goal, chance: Chance, disposition: Vec<Disposition>) {
+        self.goals.borrow_mut().push((goal, chance, disposition));
+        self.goals.borrow_mut().sort_by_key(|&(_, chance, _)| chance);
+    }
+
     pub fn check_goals(&mut self, location: LocationId) {
         let mut goals = self.goals.borrow_mut();
         goals.retain(|&(ref goal, _, _)| {
