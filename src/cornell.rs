@@ -65,6 +65,10 @@ impl Cornell {
         self.map.add(location)
     }
 
+    pub fn add_junction(&mut self, location1: LocationId, location2: LocationId) {
+        self.map.add_junction(location1, location2);
+    }
+
     pub fn add_student(&mut self, student: Student, location: LocationId) {
         if let Some(loc) = self.map.get_mut(location) {
             loc.add_student(student);

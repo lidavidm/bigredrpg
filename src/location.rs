@@ -91,6 +91,11 @@ impl Map {
         id
     }
 
+    pub fn add_junction(&mut self, location1: LocationId, location2: LocationId) {
+        self.junctions.insert(location1, location2);
+        self.junctions.insert(location2, location1);
+    }
+
     pub fn get(&self, id: LocationId) -> Option<&Location> {
         self.locations.get(&id)
     }
