@@ -16,7 +16,7 @@
  * along with BigRedRPG.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::collections::HashMap;
+use std::collections::{BinaryHeap, HashMap, HashSet};
 
 use student::{Student, StudentId};
 
@@ -73,7 +73,7 @@ impl LocationIdGenerator {
 
 pub struct Map {
     locations: HashMap<LocationId, Location>,
-    junctions: HashMap<LocationId, LocationId>,
+    junctions: HashMap<LocationId, Vec<LocationId>>,
 }
 
 impl Map {
@@ -86,14 +86,15 @@ impl Map {
 
     pub fn add(&mut self, location: Location) -> LocationId {
         let id = location.id;
-        self.locations.insert(location.id, location);
+        self.locations.insert(id, location);
+        self.junctions.insert(id, Vec::new());
 
         id
     }
 
     pub fn add_junction(&mut self, location1: LocationId, location2: LocationId) {
-        self.junctions.insert(location1, location2);
-        self.junctions.insert(location2, location1);
+        self.junctions.get_mut(&location1).unwrap().push(location2);
+        self.junctions.get_mut(&location2).unwrap().push(location1);
     }
 
     pub fn get(&self, id: LocationId) -> Option<&Location> {
@@ -110,5 +111,78 @@ impl Map {
 
     pub fn iter_mut(&mut self) -> ::std::collections::hash_map::IterMut<LocationId, Location> {
         self.locations.iter_mut()
+    }
+
+    pub fn find_path(&self, start: LocationId, end: LocationId) -> Option<Vec<LocationId>> {
+        // https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode
+        use std::cmp::Ordering;
+
+        #[derive(Clone,Copy,Eq,PartialEq)]
+        struct State {
+            location: LocationId,
+            cost: usize,
+        }
+
+        impl PartialOrd for State {
+            fn partial_cmp(&self, other: &State) -> Option<Ordering> {
+                Some(self.cmp(other))
+            }
+        }
+
+        impl Ord for State {
+            fn cmp(&self, other: &State) -> Ordering {
+                // Reverse the comparison order in order to use the
+                // stdlib max-heap as a min-heap
+                other.cost.cmp(&self.cost)
+            }
+        }
+
+        let inf = self.locations.len() + 1;
+
+        let mut dist = HashMap::new();
+        let mut prev = HashMap::new();
+        let mut seen = HashSet::new();
+        dist.insert(start, inf);
+
+        let mut heap = BinaryHeap::new();
+        heap.push(State { location: start, cost: 0 });
+
+        while let Some(State { location, cost }) = heap.pop() {
+            if seen.contains(&location) {
+                continue;
+            }
+            seen.insert(location);
+
+            if location == end {
+                let mut path = vec![location];
+                let mut cur = location;
+                while let Some(node) = prev.get(&cur) {
+                    path.push(*node);
+                    cur = *node;
+                }
+                return Some(path)
+            }
+
+            // If we've found a better way already, skip
+            if cost > *dist.get(&location).unwrap_or(&inf) {
+                continue;
+            }
+
+            for adjacent in self.junctions[&location].iter() {
+                if seen.contains(adjacent) {
+                    continue;
+                }
+
+                let next = State { location: *adjacent, cost: cost + 1 };
+
+                if next.cost < *dist.get(&adjacent).unwrap_or(&inf) {
+                    heap.push(next);
+                    dist.insert(*adjacent, next.cost);
+                    prev.insert(*adjacent, location);
+                }
+            }
+        }
+
+        None
     }
 }

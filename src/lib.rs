@@ -32,6 +32,35 @@ pub mod util;
 #[cfg(test)]
 mod tests {
     #[test]
+    fn pathfinding() {
+        let mut map = super::location::Map::new();
+        let mut locgen = super::location::LocationIdGenerator::new_from_index(0);
+
+        let l1 = map.add(super::location::Location::new("l1", locgen.new_id()));
+        let l2 = map.add(super::location::Location::new("l2", locgen.new_id()));
+        let l3 = map.add(super::location::Location::new("l3", locgen.new_id()));
+        let l4 = map.add(super::location::Location::new("l4", locgen.new_id()));
+        let l5 = map.add(super::location::Location::new("l5", locgen.new_id()));
+
+        map.add_junction(l1, l2);
+        map.add_junction(l1, l3);
+        map.add_junction(l2, l4);
+        map.add_junction(l4, l5);
+        map.add_junction(l3, l2);
+
+        let path = map.find_path(l1, l5);
+        if let Some(path) = path {
+            for part in path {
+                print!("{:?} ", part);
+            }
+            println!();
+        }
+        else {
+            println!("FAIL");
+        }
+    }
+
+    #[test]
     fn it_works() {
         let mut school = super::cornell::Cornell::new();
 
