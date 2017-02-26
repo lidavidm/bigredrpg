@@ -157,9 +157,12 @@ impl Map {
                 let mut path = vec![location];
                 let mut cur = location;
                 while let Some(node) = prev.get(&cur) {
-                    path.push(*node);
+                    if *node != start {
+                        path.push(*node);
+                    }
                     cur = *node;
                 }
+                path.reverse();
                 return Some(path)
             }
 
