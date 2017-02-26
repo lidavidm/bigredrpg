@@ -62,12 +62,13 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let mut school = super::cornell::Cornell::new();
-
         let mut locgen = super::location::LocationIdGenerator::new_from_index(0);
 
-        let lr6 = school.add_location(super::location::Location::new("Low Rise 6", locgen.new_id()));
-        let lr7 = school.add_location(super::location::Location::new("Low Rise 7", locgen.new_id()));
+        let mut map = super::location::Map::new();
+        let lr6 = map.add(super::location::Location::new("Low Rise 6", locgen.new_id()));
+        let lr7 = map.add(super::location::Location::new("Low Rise 7", locgen.new_id()));
+
+        let mut school = super::cornell::Cornell::new(map);
 
         let s1 = super::student::Student::new(0, "Test Student", "Computer Science", lr6);
         let s2 = super::student::Student::new(1, "Testing Student", "Computer Science", lr6);

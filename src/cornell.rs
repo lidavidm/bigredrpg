@@ -53,20 +53,12 @@ pub struct Cornell {
 }
 
 impl Cornell {
-    pub fn new() -> Cornell {
+    pub fn new(map: Map) -> Cornell {
         Cornell {
-            map: Map::new(),
+            map: map,
 
             time: Time(0),
         }
-    }
-
-    pub fn add_location(&mut self, location: Location) -> LocationId {
-        self.map.add(location)
-    }
-
-    pub fn add_junction(&mut self, location1: LocationId, location2: LocationId) {
-        self.map.add_junction(location1, location2);
     }
 
     pub fn add_student(&mut self, student: Student, location: LocationId) {
